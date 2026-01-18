@@ -67,7 +67,7 @@ class CorporativeComponent extends \CBitrixComponent
     {
         $carClasses = [];
         foreach ($this->getEmploess()?->getPosition()?->getElement()?->getCarClass() as $class) {
-            $carClasses[] = $class->getValue();
+            $carClasses[$class->getValue()] = $class->getValue();
         }
 
         return $carClasses;
@@ -96,7 +96,7 @@ class CorporativeComponent extends \CBitrixComponent
         $carsIds = [];
 
         foreach ($this->getAllowedCars() as $car) {
-            $carsIds[] = $car->getId();
+            $carsIds[$car->getId()] = $car->getId();
         }
 
         return $carsIds;
@@ -144,7 +144,7 @@ class CorporativeComponent extends \CBitrixComponent
 
         $reservedCarsIds = [];
         foreach ($reservedItem as $item) {
-            $reservedCarsIds[] = $item['UF_CAR_IB'];
+            $reservedCarsIds[$item['UF_CAR_IB']] = $item['UF_CAR_IB'];
         }
 
         return $reservedCarsIds;
