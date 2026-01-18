@@ -163,14 +163,16 @@ class CorporativeComponent extends \CBitrixComponent
         $carsData = [];
 
         foreach ($this->getAvailableCarsIds() as $carId) {
-            $obCar = $this->getAllowedCars()->getByPrimary($carId);
+            $obCar = $this->getAllowedCars()?->getByPrimary($carId);
 
-            $carsData[] = [
-                'ID' => $obCar->getId(),
-                'NAME' => $obCar->getName(),
-                'DRIVER' => $obCar->getDriver()?->getElement()?->getName(),
-                'CLASS' => $obCar->getClass()?->getValue(),
-            ];
+            if(!is_null($obCar)) {
+                $carsData[] = [
+                    'ID' => $obCar->getId(),
+                    'NAME' => $obCar->getName(),
+                    'DRIVER' => $obCar->getDriver()?->getElement()?->getName(),
+                    'CLASS' => $obCar->getClass()?->getValue(),
+                ];
+            }
         }
 
         return $carsData;
