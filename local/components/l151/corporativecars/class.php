@@ -17,7 +17,6 @@ class CorporativeComponent extends \CBitrixComponent
     protected \Bitrix\Iblock\Elements\EO_ElementEmploess $emploess;
     protected ?\Bitrix\Iblock\Elements\EO_ElementCars_Collection $allowedCars;
     protected const CAR_BOOKING_TABLE_NAME = 'cars_booking';
-    protected const CAR_BOOKING_HL_ID = 7;
 
     function executeComponent()
     {
@@ -113,16 +112,8 @@ class CorporativeComponent extends \CBitrixComponent
     {
         $hlblock = HighloadBlockTable::query()
             ->where('TABLE_NAME', '=', self::CAR_BOOKING_TABLE_NAME)
+            ->setSelect(['ID', 'NAME', 'TABLE_NAME'])
             ->fetch();
-
-        //fix для тестового сервера
-        if(empty($hlblock['ID'])) {
-            $hlblock = [
-                'ID' => self::CAR_BOOKING_HL_ID,
-                'NAME' => 'CarsBooking',
-                'TABLE_NAME' => 'cars_booking',
-            ];
-        }
 
         $entity = HighloadBlockTable::compileEntity($hlblock);
         $entityDataClass = $entity->getDataClass();
