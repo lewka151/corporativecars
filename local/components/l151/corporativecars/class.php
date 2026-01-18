@@ -23,11 +23,10 @@ class CorporativeComponent extends \CBitrixComponent
     {
         try {
             $this->init();
+            vdump($this->arResult);
         } catch (\Exception $e) {
             vdump($e->getMessage());
         }
-
-        vdump($this->arResult);
     }
 
     /**
@@ -35,7 +34,7 @@ class CorporativeComponent extends \CBitrixComponent
      */
     public function init(): void
     {
-        $this->arResult['ALLOWED_CARS_CLASSES'] = $this->getAvailableClassesCars();
+        $this->arResult['ALLOWED_CARS_CLASSES'] = $this->getAllowedClassesCars();
         $this->arResult['ALLOWED_CARS_IDS'] = $this->getAllowedCarsIds();
         $this->arResult['AVAILABLE_CARS'] = $this->getAvailableCarsData();
     }
@@ -64,7 +63,7 @@ class CorporativeComponent extends \CBitrixComponent
     /**
      * @throws Exception
      */
-    protected function getAvailableClassesCars(): array
+    protected function getAllowedClassesCars(): array
     {
         $carClasses = [];
         foreach ($this->getEmploess()?->getPosition()?->getElement()?->getCarClass() as $class) {
@@ -84,7 +83,7 @@ class CorporativeComponent extends \CBitrixComponent
         }
 
         return $this->allowedCars = \Bitrix\Iblock\Elements\ElementCarsTable::query()
-            ->whereIn('CLASS.VALUE', $this->getAvailableClassesCars())
+            ->whereIn('CLASS.VALUE', $this->getAllowedClassesCars())
             ->setSelect(['ID', 'NAME', 'DRIVER.ELEMENT.NAME', 'CLASS.VALUE'])
             ->fetchCollection();
     }
@@ -178,11 +177,17 @@ class CorporativeComponent extends \CBitrixComponent
     }
 
 
+    /**
+     * @throws Exception
+     */
     protected function getDateFrom(): DateTime
     {
         return $this->createDateFromString($this->request->get('from'), 'from');
     }
 
+    /**
+     * @throws Exception
+     */
     protected function getDateTo(): DateTime
     {
         return $this->createDateFromString($this->request->get('to'), 'to');
